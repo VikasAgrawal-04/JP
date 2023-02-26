@@ -6,12 +6,15 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { Items } from './Items';
 import {MenuItems} from './menuData';
+import {Provider} from "react-redux";
+import {store} from "./store";
+
+
 const CartCard = () => {
 
 
 
   const[item,setItem]=useState(MenuItems);
-
 
   return (
     <>
@@ -21,7 +24,7 @@ const CartCard = () => {
       <h3>Continue Shopping</h3>
     </div>
     <div className="cart-icon">
-    <ShoppingCartIcon alt="cart"/>
+    <ShoppingCartIcon style={{ fontSize: 58 }} alt="cart"/>
     <p>7</p>
     </div>
     </header>

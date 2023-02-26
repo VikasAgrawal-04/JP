@@ -44,7 +44,8 @@ header {
   grid-template-columns: 1fr 1fr;
   border-bottom: 0.1rem solid #9a9191;
   transform: rotate(-0.05deg);
-  margin-bottom: 7rem;
+  margin-top: 5rem;
+  margin-bottom: 10rem;
 }
 
 .continue-shopping {
@@ -76,8 +77,8 @@ header {
 }
 
 .cart-icon img {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   color: #2f80ed;
 }
 

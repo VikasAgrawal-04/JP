@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Items = ({name,images,description,price,ingredients}) => {
+export const Items = ({_id,name,images,price,ingredients}) => {
   return (
     <>
      <div className='items-info'>
@@ -23,7 +23,7 @@ export const Items = ({name,images,description,price,ingredients}) => {
               </div>
 
               <div className='remove-item'>
-                <i className='fas fa-trash-alt remove'></i>
+                <i className='fas fa-trash-alt remove' onClick={()=>removeItem(_id)}></i>
               </div>
               </div>
 
