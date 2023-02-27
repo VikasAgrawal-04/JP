@@ -39,9 +39,15 @@ export const Header = () => {
   function handleSignup() {
     navigate("/register");
   }
+  const [userData, setUserDataLocal] = useState("");
 
-  const userData = useSelector((state) => state.user.value['user_data']);
-  console.log(userData,"userData");
+  useEffect(() => {
+   (async function fetchLocalDataFromStorage(){
+    const local  = await getUserData();
+    setUserDataLocal(local);
+   })()
+  }, []);
+  console.log(userData, "userData");
   const isLoggedIn = userData ? true : false;
 
   return (
@@ -91,7 +97,7 @@ export const Header = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                   >
-                    <Avatar sx={{ width: 60, height: 60, bgcolor: "#DB5520" }}>
+                    <Avatar sx={{ width: 60, height: 60, bgcolor: "#FB2B55" }}>
                       {userData.fname[0]}
                     </Avatar>
                   </IconButton>
@@ -141,10 +147,14 @@ export const Header = () => {
                 <MenuItem onClick={handleClose}>
                   <Avatar /> My Profile
                 </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Avatar /> My Order
+                </MenuItem>
                 <Divider />
                 <MenuItem
                   onClick={() => {
-                    dispatch(logout())
+                    setUserDataLocal("");
+                    dispatch(logout());
                     clearLocalStorage();
                   }}
                 >
@@ -161,6 +171,7 @@ export const Header = () => {
                 <MyTextButton
                   className="sign-in-button"
                   onClick={handleLogin}
+                  background={{ color: "#256fef" }}
                   style={{ color: "#ff5f1f" }}
                   label="Log In"
                 />
