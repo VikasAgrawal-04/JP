@@ -1,6 +1,9 @@
-import React from 'react'
+import React ,{useContext}from 'react'
+import { CartContext } from './cart_card';
 
-export const Items = ({_id,name,images,price,ingredients}) => {
+
+export const Items = ({slug,name,images,price,ingredients}) => {
+  const {removeItem} = useContext(CartContext);
   return (
     <>
      <div className='items-info'>
@@ -23,7 +26,8 @@ export const Items = ({_id,name,images,price,ingredients}) => {
               </div>
 
               <div className='remove-item'>
-                <i className='fas fa-trash-alt remove' onClick={()=>removeItem(_id)}></i>
+                <i className='fas fa-trash-alt remove' 
+                onClick={()=>removeItem(slug)}></i>
               </div>
               </div>
 

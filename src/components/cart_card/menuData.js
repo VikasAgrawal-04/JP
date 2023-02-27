@@ -1,7 +1,7 @@
-export const MenuItems=[{
-
-
-
+export const MenuItems=[
+  
+  
+  {
     "_id": {
       "$oid": "63eb56cb1600fe2e71af5b7d"
     },
@@ -82,4 +82,6 @@ export const MenuItems=[{
     "price":55,
     "__v": 0 ,
     "ingredients":"Refined wheat flour,Veggies ,Soya Sauce"
-  }]
+  },
+
+]
