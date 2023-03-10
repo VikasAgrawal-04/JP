@@ -22,8 +22,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { addToCart } from "../../reducers/add_to_cart_slice";
 import { login } from "../../reducers/user_slice";
-import { loginUserService } from "../../Utilities/Axios/apiService";
+import { getCartService, loginUserService } from "../../Utilities/Axios/apiService";
 import { setUserData } from "../../Utilities/Helper/function";
 import "./login.css";
 
@@ -76,6 +77,9 @@ const LoginPage = () => {
       setUserData(userData.data.user);
       dispatch(login({ user_data: userData.data.user }));
       toast.success("Login Successful!");
+      let cartData = await getCartService(userData.data.user._id);
+      console.log(cartData, "cartData ka data from login");
+      dispatch(addToCart({ cartItems: cartData.data.matchedCart }));
       if (userData.data.user) {
         navigate("/");
       }

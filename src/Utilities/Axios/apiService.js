@@ -107,12 +107,45 @@ export const deleteFromCart = async (data) => {
 };
 
 export const checkout = async (data) => {
-  console.log(data,"payload");
   const user = await getUserData();
-  console.log(user.token);
   return new Promise(async (resolve, reject) => {
     try {
       let response = await apiInstance.post("/order/new", data, {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const getProfile = async () => {
+  const user = await getUserData();
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await apiInstance.get("/me", {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/**
+ * @param data ({fname,lname,email,phone,address,city,state,zip})
+ */
+export const updateProfile = async (data) => {
+  const user = await getUserData();
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await apiInstance.patch("/me/update", data, {
         headers: {
           Authorization: user.token,
         },

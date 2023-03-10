@@ -19,7 +19,7 @@ import { logout } from "../../../reducers/user_slice";
 import { getCartService } from "../../../Utilities/Axios/apiService";
 import {
   clearLocalStorage,
-  getUserData
+  getUserData,
 } from "../../../Utilities/Helper/function";
 import MyTextButton from "../button/buttons";
 import "./header.css";
@@ -117,7 +117,7 @@ export const Header = () => {
                       invisible={
                         (cartLength && cartLength[0] && cartLength[0].cartItems
                           ? cartLength[0].cartItems.length //reducer wali
-                          : cart.length) > 0  //api wali
+                          : cart.length) > 0 //api wali
                           ? false
                           : true
                       }
@@ -187,7 +187,7 @@ export const Header = () => {
                   </Badge>
                   My Cart
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() => navigate("/profile")}>
                   <PersonOutlineOutlinedIcon sx={{ mr: 2 }} /> My Profile
                 </MenuItem>
                 <MenuItem onClick={handleClose}>

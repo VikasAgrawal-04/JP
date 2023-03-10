@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import MyProfile from "./components/common/header/my_profile";
 import CartPage from "./pages/cart/cart";
 import CategoryPage from "./pages/explore_category/explore_category";
 import HomePage from "./pages/home/home_page";
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="category/:slug" element={<CategoryPage />} />
+        <Route path="/profile" element={<MyProfile />} />
       </Routes>
     </Router>
   );

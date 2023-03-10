@@ -6,8 +6,6 @@ const CartSlice = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
-      console.log(action.payload, "action ka payload");
-
       state.cartItems = action.payload;
     },
   },

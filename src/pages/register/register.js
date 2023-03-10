@@ -28,10 +28,14 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAllStates, getSelectedStateData } from "../../data/fetch_state";
+import { addToCart } from "../../reducers/add_to_cart_slice";
 import { getCities } from "../../reducers/city_slice";
 import { getState } from "../../reducers/state_slice";
 import { login } from "../../reducers/user_slice";
-import { registerUserService } from "../../Utilities/Axios/apiService";
+import {
+  getCartService,
+  registerUserService,
+} from "../../Utilities/Axios/apiService";
 import { setUserData } from "../../Utilities/Helper/function";
 import "./register.css";
 
@@ -136,6 +140,9 @@ const RegisterPage = () => {
       setUserData(userData.data.user);
       dispatch(login({ user_data: userData.data.user }));
       toast.success("Registered Successful!");
+      let cartData = await getCartService(userData.data.user._id);
+      console.log(cartData, "cartData from register page");
+      dispatch(addToCart({ cartItems: cartData.data.matchedCart }));
       if (userData.data.user) {
         navigate("/");
       }
@@ -188,7 +195,7 @@ const RegisterPage = () => {
                   required
                   fullWidth
                   id="fname"
-                  label="Firse Name"
+                  label="First Name"
                   name="fname"
                   autoComplete="fname"
                   autoFocus
