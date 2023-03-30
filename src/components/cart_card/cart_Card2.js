@@ -1,20 +1,40 @@
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { Divider } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
 import React, { useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import cash from "../../images/cash.png";
 import logo from "../../images/logo.png";
+import online from "../../images/online.png";
 import { addToCart } from "../../reducers/add_to_cart_slice";
-import { checkout, getCartService } from "../../Utilities/Axios/apiService";
+import {
+  checkout,
+  getCartService,
+  getKey,
+  payOnline
+} from "../../Utilities/Axios/apiService";
 import { getUserData } from "../../Utilities/Helper/function";
 import "./cart.css";
 import { Items } from "./Items";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export const Cart_Card2 = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const user = useSelector((state) => state.user.user_data);
+  console.log(user, "user");
   const cartProduct = useSelector((state) => [state.cart.cartItems]);
   const [cart, setCart] = useState([]);
   const [totalSum, setTotalSum] = useState([]);
@@ -46,7 +66,7 @@ export const Cart_Card2 = () => {
     })();
   }, [cartProduct[0].cartItems]);
 
-  async function HandleCheckout() {
+  async function handleCod() {
     try {
       let response = await checkout({
         shippingInfo: {
@@ -74,6 +94,44 @@ export const Cart_Card2 = () => {
       navigate("/");
     } catch (err) {
       console.log(err, "error h bro");
+    }
+  }
+
+  async function handleOnline() {
+    try {
+      const {
+        data: { key },
+      } = await getKey();
+
+      const {
+        data: { order },
+      } = await payOnline({ amount: totalSum });
+      console.log(order.id,"id");
+      const options = {
+        key: key, // Enter the Key ID generated from the Dashboard
+        amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: "INR",
+        name: "FoodPanda",
+        description: "Test Transaction",
+        image: logo,
+        order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        callback_url: "http://localhost:3000/api/payment-verification",
+        prefill: {
+          name: "Gaurav Kumar",
+          email: "gaurav.kumar@example.com",
+          contact: "9000090000",
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#121212",
+        },
+      };
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    } catch (error) {
+      console.log(error, "online error");
     }
   }
 
@@ -148,7 +206,7 @@ export const Cart_Card2 = () => {
               />
               Continue Shopping
             </div>
-            <div className="cur-pointer checkout" onClick={HandleCheckout}>
+            <div className="cur-pointer checkout" onClick={() => setOpen(true)}>
               Checkout
               <ArrowForwardIosOutlinedIcon
                 sx={{
@@ -162,6 +220,41 @@ export const Cart_Card2 = () => {
           </div>
         </div>
       </section>
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setOpen(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle sx={{ fontSize: "28px" }}>
+          Your Total Amount :{" "}
+          {totalSum !== [] ? Number(totalSum).toFixed(2) : ""}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {"Payment Options :"}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions className="dialog">
+          <div className="payment-options">
+            <div className="payment-container" onClick={handleOnline}>
+              <div className="payment-image">
+                <img className="payment-image-img" src={online} alt="online" />
+              </div>
+              <div>UPI/Credit/Debit</div>
+            </div>
+            <div className="cod">
+              <div className="payment-container" onClick={handleCod}>
+                <div className="payment-image">
+                  <img className="payment-image-img" src={cash} alt="cash" />
+                </div>
+                <div>Cash On Delivery</div>
+              </div>
+            </div>
+          </div>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

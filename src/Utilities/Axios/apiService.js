@@ -156,3 +156,34 @@ export const updateProfile = async (data) => {
     }
   });
 };
+
+/**
+ * @param data ({amount})
+ */
+export const payOnline = async (data) => {
+  const user = await getUserData();
+  data.userId = user._id;
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await apiInstance.post("/payment", data, {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const getKey = async () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = await apiInstance.get("/get-key");
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
