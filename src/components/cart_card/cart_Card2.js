@@ -104,17 +104,18 @@ export const Cart_Card2 = () => {
       } = await getKey();
 
       const {
-        data: { order },
+        data: { orderDetails },
       } = await payOnline({ amount: totalSum });
-      console.log(order.id,"id");
+      console.log(orderDetails,"Order");
+      console.log(orderDetails.id,"id");
       const options = {
         key: key, // Enter the Key ID generated from the Dashboard
-        amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        amount: orderDetails.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         currency: "INR",
         name: "FoodPanda",
         description: "Test Transaction",
         image: logo,
-        order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        order_id: orderDetails.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         callback_url: "http://localhost:3000/api/payment-verification",
         prefill: {
           name: "Gaurav Kumar",

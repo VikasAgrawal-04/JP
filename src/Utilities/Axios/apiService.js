@@ -170,6 +170,7 @@ export const payOnline = async (data) => {
           Authorization: user.token,
         },
       });
+      console.log("response", response);
       resolve(response);
     } catch (error) {
       reject(error);
@@ -181,6 +182,76 @@ export const getKey = async () => {
   return new Promise(async (resolve, reject) => {
     try {
       let response = await apiInstance.get("/get-key");
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const updateMenuItems = async (data) => {
+  console.log(data);
+  return new Promise(async (resolve, reject) => {
+    const user = await getUserData();
+    try {
+      let response = await apiInstance.patch("/update/menu", data, {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      console.log("response", response);
+      resolve(response);
+    } catch (error) {
+      console.log(error, "error in update");
+      reject(error);
+    }
+  });
+};
+
+export const updateCategory = async (id, data) => {
+  console.log(id, "id");
+  console.log(data, "data");
+  return new Promise(async (resolve, reject) => {
+    const user = await getUserData();
+    try {
+      let response = await apiInstance.put(`/category/${id}`, data, {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      console.log("response", response);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const addMenuItem = async (data) => {
+  return new Promise(async (resolve, reject) => {
+    const user = await getUserData();
+    try {
+      let response = await apiInstance.post("/menu/new", data, {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const createCategory = async (data) => {
+  return new Promise(async (resolve, reject) => {
+    const user = await getUserData();
+    try {
+      let response = await apiInstance.post("/category/new", data, {
+        headers: {
+          Authorization: user.token,
+        },
+      });
       resolve(response);
     } catch (error) {
       reject(error);
